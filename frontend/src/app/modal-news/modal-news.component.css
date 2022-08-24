@@ -1,0 +1,6 @@
+div.modal-header button {
+    vertical-align:top;
+    margin-bottom: 50px;
+    background-color: transparent;
+    outline: none;
+}

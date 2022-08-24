@@ -1,0 +1,66 @@
+<!-- Modal -->
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content"> -->
+<div class="modal-header">
+    <div class="modal-title" id="exampleModalLabel">
+        <h3>
+            {{news.source}}
+        </h3>
+        <p class="text-secondary">{{ news.datetime * 1000 | date: "longDate":"-0700" }}</p>
+    </div>
+    <button type="button" class="close border-0" data-dismiss="modal" aria-label="Close"
+        (click)="newsModalService.dismiss('Cross click')">
+        <span aria-hidden="true" class="filter-gray">
+            <!-- &times; -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                class="bi bi-x filter-gray" viewBox="0 0 16 16">
+                <path
+                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+        </span>
+    </button>
+</div>
+<div class="modal-body">
+    <h5> {{news.headline}} </h5>
+    <p> {{news.summary}} </p>
+    <p>For more details click
+        <a href="{{news.url}}" target="_blank" class="text-primary" style="text-decoration:none;">here</a>
+    </p>
+
+    <div class="card m-2 mx-auto">
+        <div class="card-body">
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+            <!-- <a class="btn-cta-freequote" href="#"><i class="fa fa-2x fab fa-facebook-square"></i></a> -->
+            <div class="row mx-1">Share</div>
+            <div class="p-0 mx-1">
+                <a style="width: 20px;" class="m-2 p-0" href="https://twitter.com/intent/tweet?text={{ news.headline }}&url={{
+                news.url}}" target="_blank" data-size="large">
+                    <span class='bi bi-twitter' style='color:#3993f3'>
+                        <svg style="margin-bottom: 20px;" xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+                            fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
+                            <path
+                                d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
+                        </svg>
+                    </span>
+                </a>
+
+                <a style="width: 20px;" class="m-2 p-0" href="https://developers.facebook.com/docs/plugins/"
+                    target="_blank" data-size="large">
+                    <a style="margin-top: 10px;" target="_blank" href="{{ getFb }}" class="fb-xfbml-parse-ignore">
+                        <i class="m-0 p-0 fa fa-3x fab fa-facebook-square" style="color: blue;">
+                        </i>
+                    </a>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary">Save changes</button>
+</div> -->
+<!-- </div>
+    </div>
+</div> -->

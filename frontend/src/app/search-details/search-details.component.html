@@ -1,0 +1,336 @@
+<app-search-form></app-search-form>
+
+<br>
+<br>
+<br>
+<br>
+
+<mat-spinner
+    *ngIf="(!description || !latestPrice || !news || !hourlyDataFinished || !hisDataFinished || !socialSentiments|| !earning) && validTicker"
+    class="mt-4 mx-auto">
+</mat-spinner>
+
+<!-- <div> -->
+
+<!-- *ngIf="description && latestPrice && news && hourlyDataFinished && hisDataFinished && socialSentiments && earning && validTicker" -->
+<div class="mainBody mx-auto container"
+    *ngIf="description && latestPrice && news && hourlyDataFinished && hisDataFinished && socialSentiments && earning && validTicker">
+    <ngb-alert *ngIf="starMarkedMsg && inWatchlist" type="success" class="text-center" (closed)="starMarkedMsg = ''">
+        {{ ticker | uppercase }} added to Watchlist.
+    </ngb-alert>
+    <ngb-alert *ngIf="starMarkedMsg && !inWatchlist" type="danger" class="text-center" (closed)="starMarkedMsg = ''">
+        {{ ticker | uppercase }} removed from Watchlist.
+    </ngb-alert>
+    <ngb-alert *ngIf="transMsg" type="{{transType}}" class="text-center" (closed)="transMsg = ''">{{ ticker |
+        uppercase
+        }} {{transMsg}} successfully.</ngb-alert>
+    <div class="row">
+        <div class="col-sm">
+            <h1 class="pl-5">
+                {{description.ticker}}
+                <i (click)="starClick()" class="bi bi-star my-auto">
+                    <svg *ngIf="!inWatchlist" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                        fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                        <path
+                            d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+                    </svg>
+                </i>
+                <i (click)="starClick()" class="bi bi-star-fill my-auto">
+                    <svg *ngIf="inWatchlist" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#FFBF00"
+                        class="bi bi-star-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                    </svg>
+                </i>
+            </h1>
+
+            <h2 class="text-secondary"> {{description.company_name}} </h2>
+            <h3> {{description.exchange_code}} </h3>
+            <button type="button" class="btn btn-success"
+                (click)="transactionModal(description.ticker, description.company_name, latestPrice.last_price, leftMoney, 'Buy')">Buy</button>
+            <button *ngIf="bought" type="button" class="btn btn-danger ms-2"
+                (click)="transactionModal(description.ticker, description.company_name, latestPrice.last_price, leftMoney, 'Sell')">Sell</button>
+        </div>
+        <div class="col-sm">
+            <img class="mx-auto d-block" src="{{description.logo}}" alt="">
+        </div>
+        <div class="col-sm" *ngIf="flag">
+            <h1 class="d-flex flex-row-reverse" [ngStyle]="{'color': currentColor}"> {{latestPrice.last_price | number:
+                "1.2-2" }} </h1>
+            <h2 class="d-flex flex-row-reverse" [ngStyle]="{'color': currentColor}">
+                {{latestPrice.change | number: "1.2-2" }} ({{latestPrice.change_percentage | number: "1.2-2" }}%)
+                <i class="bi bi-caret-up-fill"><svg *ngIf="latestPrice.change > 0" xmlns="http://www.w3.org/2000/svg"
+                        width="20" height="20" fill="#098d3a" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                        <path
+                            d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                    </svg>
+                </i>
+                <i class="bi bi-caret-down-fill"><svg *ngIf="latestPrice.change < 0" xmlns="http://www.w3.org/2000/svg"
+                        width="20" height="20" fill="#ff0000" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                    </svg>
+                </i>
+                <!-- {{latestPrice.change}} ({{latestPrice.change_percentage}}%) -->
+            </h2>
+            <h3 class="float-end">{{latestPrice.current_timestamp * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</h3>
+        </div>
+    </div>
+    <div class="text-center mt-3 mb-4" *ngIf="isOpen">
+        <h4>
+            Market is Open
+        </h4>
+    </div>
+    <div class="text-center mt-3 mb-4" *ngIf="!isOpen" style="color: #ff0000;">
+        <h4>
+            Market Closed on {{ latestPrice.current_timestamp * 1000 | date:'yyyy-MM-dd HH:mm:ss' }}
+        </h4>
+    </div>
+
+
+    <mat-tab-group mat-stretch-tabs matRipple>
+        <mat-tab label="Summary">
+            <div class="container">
+                <div class="row flex-row mt-4">
+                    <div class="col-sm">
+                        <div class="row ml-1">
+                            <div class="price">
+                                <p>High Price: {{latestPrice.high_price}} </p>
+                                <p>Low Price: {{latestPrice.low_price}} </p>
+                                <p>Open Price: {{latestPrice.open_price}} </p>
+                                <p>Prev.Close: {{latestPrice.prev_close}} </p>
+                            </div>
+                        </div>
+                        <!-- <div class="w-100"></div> -->
+                        <div class="row mt-5">
+                            <p class="h5 row text-center">
+                                <u>About the company</u>
+                            </p>
+                        </div>
+                        <div class="price row">
+                            <p>IPO Start Date: {{description.ipo_start_date}} </p>
+                            <p>Industry: {{description.industry}} </p>
+                            <p>Webpage:
+                                <a target="_blank" href="{{description.weburl}}"
+                                    style="text-decoration:none;">{{description.weburl}}
+                                </a>
+                            </p>
+                            <div>
+                                Company peers:
+                                <div>
+                                    <div class="col-1">
+                                        <span role="button" class="text-primary" *ngFor="let peer of peerWebs" (click)="searchPeer(peer.company)"
+                                            style="text-decoration:none;">{{
+                                            peer.company }},</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <highcharts-chart [Highcharts]="Highcharts" [constructorType]="'stockChart'"
+                            [options]="hourlyDataChartsOptions" style="width: 100%; height: 400px; display: block">
+                        </highcharts-chart>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Top News">
+            <div class="app flex-row align-items-center">
+                <div class="container">
+                    <div class="card-deck row">
+                        <div class="card col-md-6 mx-auto my-3 newsCard" *ngFor="let thisNews of news">
+                            <div class="card-block" (click)="openNewsModal(thisNews)">
+                                <div style="height: 50px;">
+                                    <img src="{{thisNews.image}}" alt="" class="w-25 mb-3 mx-2"
+                                        style="float:left; margin-right: 10px;">
+                                    <p class="mx-2 mt-3">{{thisNews.headline}}</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Charts">
+            <ng-template matTabContent>
+                <div>
+                    <highcharts-chart [Highcharts]="Highcharts" [constructorType]="'stockChart'"
+                        [options]="hisDataChartsOptions" style="width: 100%; height: 650px; display: block">
+                    </highcharts-chart>
+                </div>
+            </ng-template>
+        </mat-tab>
+
+        <mat-tab label="Insights">
+            <ng-template matTabContent>
+                <h3 class="text-center mt-5">Social Sentiments</h3>
+                <table class="table w-50 mx-auto mt-1 mb-3 text-center" style="background-color: white;">
+                    <thead>
+                        <tr class="table-light">
+                            <th scope="col" class="w-50">{{description.company_name}}</th>
+                            <th scope="col">Reddit</th>
+                            <th scope="col">Twitter</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="w-50 table-light">Total Mentions</th>
+                            <td> {{socialSentiments.reddit.mention}} </td>
+                            <td> {{socialSentiments.twitter.mention}} </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-50 table-light">Positive Mentions</th>
+                            <td> {{socialSentiments.reddit.positiveMention}} </td>
+                            <td> {{socialSentiments.twitter.positiveMention}} </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="w-50 table-light">Negative Mentions</th>
+                            <td> {{socialSentiments.reddit.negativeMention}} </td>
+                            <td> {{socialSentiments.twitter.negativeMention}} </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <div class="col-sm">
+                        <highcharts-chart [Highcharts]="Highcharts" [options]="trendsChartsOptions"
+                            style="width: 100%; height: 450px; display: block;">
+                        </highcharts-chart>
+                    </div>
+                    <div class="col-sm">
+                        <highcharts-chart [Highcharts]="Highcharts" [options]="earningChartsOptions"
+                            style="width: 100%; height: 450px; display: block;">
+                        </highcharts-chart>
+                    </div>
+                </div>
+                <!-- <highcharts-chart [Highcharts]="Highcharts" [options]="trendsChartsOptions"
+                    style="width: 50%; height: 450px; display: block; float: left">
+                </highcharts-chart> -->
+
+                <!-- <highcharts-chart [Highcharts]="Highcharts" [options]="earningChartsOptions"
+                    style="width: 50%; height: 450px; display: block; float: right">
+                </highcharts-chart> -->
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
+</div>
+<!-- </div> -->
+<!-- <footer class="footer mt-auto">
+    <div class="container text-center">
+        Powered by <a href="https://finnhub.io">Finnhub.io</a>
+    </div>
+</footer> -->
+
+<!-- <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="price">
+                    <p>High Price: {{latestPrice.high_price}} </p>
+                    <p>Low Price: {{latestPrice.low_price}} </p>
+                    <p>Open Price: {{latestPrice.open_price}} </p>
+                    <p>Prev.Close: {{latestPrice.prev_close}} </p>
+                </div>
+                <div class="w-100"></div>
+                <div class="col">
+                    <p class="h5 text-center">
+                        <u>About the company</u>
+                    </p>
+                    <div class="price">
+                        <p>IPO Start Date: {{description.ipo_start_date}} </p>
+                        <p>Industry: {{description.industry}} </p>
+                        <p>Webpage:
+                            <a href="{{description.weburl}}" style="text-decoration:none;">{{description.weburl}} </a>
+                        </p>
+                        <div>
+                            Company peers:
+                            <div>
+                                <div class="col-1">
+                                    <a *ngFor="let peer of peerWebs" href="{{ peer.web }}"
+                                        style="text-decoration:none;">{{ peer.company }},</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <highcharts-chart [Highcharts]="Highcharts" [constructorType]="'stockChart'"
+                    [options]="hourlyDataChartsOptions" style="width: 100%; height: 400px; display: block">
+                </highcharts-chart>
+            </div>
+        </div>
+    </div> -->
+
+<!-- <div>
+        <highcharts-chart [Highcharts]="Highcharts" [constructorType]="'stockChart'" [options]="hisDataChartsOptions"
+            style="width: 100%; height: 650px; display: block">
+        </highcharts-chart>
+    </div> -->
+
+<!-- <div class="app flex-row align-items-center">
+        <div class="container">
+            <div class="card-deck row">
+                <div class="card col-md-6" *ngFor="let thisNews of news">
+                    <div class="card-block" (click)="openNewsModal(thisNews)">
+                        <div style="height: 50px;">
+                            <img src="{{thisNews.image}}" alt="" class="w-25 my-auto"
+                                style="float:left; margin-right: 10px;">
+                            {{thisNews.headline}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+<!-- <table class="table w-50 mx-auto my-5 text-center">
+        <thead>
+            <tr class="table-light">
+                <th scope="col" class="w-50">{{description.company_name}}</th>
+                <th scope="col">Reddit</th>
+                <th scope="col">Twitter</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row" class="w-50 table-light">Total Mentions</th>
+                <td> {{socialSentiments.reddit.mention}} </td>
+                <td> {{socialSentiments.twitter.mention}} </td>
+            </tr>
+            <tr>
+                <th scope="row" class="w-50 table-light">Positive Mentions</th>
+                <td> {{socialSentiments.reddit.positiveMention}} </td>
+                <td> {{socialSentiments.twitter.positiveMention}} </td>
+            </tr>
+            <tr>
+                <th scope="row" class="w-50 table-light">Negative Mentions</th>
+                <td> {{socialSentiments.reddit.negativeMention}} </td>
+                <td> {{socialSentiments.twitter.negativeMention}} </td>
+            </tr>
+        </tbody>
+    </table> -->
+
+<!-- <highcharts-chart [Highcharts]="Highcharts" [options]="trendsChartsOptions"
+        style="width: 50%; height: 450px; display: block; float: left">
+    </highcharts-chart>
+
+    <highcharts-chart [Highcharts]="Highcharts" [options]="earningChartsOptions"
+        style="width: 50%; height: 450px; display: block; float: right">
+    </highcharts-chart> -->
+
+<!-- <footer class="footer mt-auto">
+    <div class="container text-center">
+        Powered by <a href="https://finnhub.io">Finnhub.io</a>
+    </div>
+</footer> -->
+<!-- <app-footer></app-footer> -->
+
+<div *ngIf="description && !validTicker" class="container mt-5">
+    <div class="alert alert-danger text-center text-dark" role="alert">
+        No data found. Please enter valid Ticker
+    </div>
+</div>

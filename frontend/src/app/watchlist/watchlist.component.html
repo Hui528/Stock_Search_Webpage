@@ -1,0 +1,59 @@
+<div class="mainBody mx-auto mt-5">
+    <h1>My Watchlist</h1>
+    <div class="container">
+        <mat-spinner *ngIf="!finished && !isEmpty" class="mt-4 mx-auto"></mat-spinner>
+        <ngb-alert [dismissible]="false" *ngIf="isEmpty" class="text-center text-dark mx-3">Currently
+            you don't have any stock in your watchlist.
+        </ngb-alert>
+
+        <div *ngIf="finished && !isEmpty">
+            <!-- <div class="alert alert-warning alert-dismissible" role="alert">
+                <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div> -->
+            <ngb-alert type="alert.type" *ngFor="let result of allResults" class="card border"
+                (closed)="removeFromWatchlist(result)">
+                <div class="row" (click)="detailPageLink(result.ticker)">
+                    <div class="col">
+                        <h3>
+                            {{result.ticker}}
+                        </h3>
+                        <h5>
+                            {{result.name}}
+                        </h5>
+                    </div>
+                    <div class="col" [class.text-danger]="result.change < 0" [class.text-success]="result.change > 0"
+                        [class.text-dark]="result.change == 0">
+                        <h3 class="m-0 p-0 d-flex flex-row-reverse">
+                            {{result.latestPrice}}
+                        </h3>
+                        <div>
+
+                            <h5 class="my-2 p-0 d-flex flex-row-reverse">
+                                {{ result.change | number: "1.0-2" }}({{ result.changePercent | number: "1.0-2" }}%)
+                                <i class="bi bi-caret-up-fill"><svg *ngIf="result.change > 0"
+                                        xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#098d3a"
+                                        class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                                    </svg>
+                                </i>
+                                <i class="bi bi-caret-down-fill"><svg *ngIf="result.change < 0"
+                                        xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ff0000"
+                                        class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                        <path
+                                            d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                    </svg>
+                                </i>
+                                <!-- {{ result.change | number: "1.0-2" }}({{ result.changePercent | number: "1.0-2" }}%) -->
+                            </h5>
+                        </div>
+
+                    </div>
+                </div>
+            </ngb-alert>
+        </div>
+    </div>
+</div>

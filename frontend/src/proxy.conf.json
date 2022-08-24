@@ -1,0 +1,10 @@
+{
+    "/api": {
+        "target": "https://hw8-backend-server.wl.r.appspot.com",
+        "secure": true,
+        "changeOrigin": true,
+        "pathRewrite": {
+            "^/api": ""
+        }
+    }
+}

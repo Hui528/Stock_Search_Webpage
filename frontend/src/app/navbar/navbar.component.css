@@ -1,0 +1,25 @@
+.navbar {
+    background: #1523A7;
+}
+
+.active {
+    border-color: white;
+    border: 1px solid white;
+    border-radius: 15px;
+}
+
+.active a{
+    color: white !important;
+}
+
+.navbar .navbar-brand {
+    margin-left: 15px;
+}
+
+.collapse {
+    margin-right: 15px;
+}
+
+.navbar-nav {
+    margin-left: auto;
+}

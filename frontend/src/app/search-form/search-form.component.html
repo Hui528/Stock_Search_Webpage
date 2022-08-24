@@ -1,0 +1,51 @@
+<p class="text-center h2 mt-5 mb-0">STOCK SEARCH</p>
+<div class="container text-center text-center mt-0 mb-5 text-secondary finnhub">
+    Powered by <a href="https://finnhub.io" target="_blank">Finnhub.io</a>
+</div>
+<!-- <form action="" #templateForm="ngForm" (ngSubmit)="onSubmit(templateForm.value)"> -->
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit(searchForm.value)" class="mx-auto">
+    <div class="input-group rounded-pill form-control rounded-pill border-3 border-primary">
+        <!-- <input type="text" class="border-0 no-outline w-75 form-control" ngModel name="ticker" -->
+        <input type="text" class="border-0 no-outline form-control autocomplete" placeholder="Enter Stock Symbol"
+            aria-label="Search" aria-describedby="search-addon" formControlName="tickerInput" [matAutocomplete]="auto"
+            matAutocompletePosition="below" />
+        <!-- <span class="input-group-text border-0" id="search-addon">
+        <i class="fas fa-search"></i>
+    </span> -->
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" panelWidth="300px"
+            class="mat-autocomplete-panel">
+            <mat-option class="CustomerDropDown" *ngIf="isLoading" class="is-loading">
+                <mat-spinner [diameter]="40">
+                </mat-spinner>
+            </mat-option>
+            <ng-container *ngIf="!isLoading">
+
+                <mat-option *ngFor="let company of searchfilter" [value]="company"
+                    (click)="clickOnAutocomplete(company.displaySymbol)">
+                    <span>{{ company.displaySymbol }}</span>
+                    <small> | {{company.description}}</small>
+                </mat-option>
+            </ng-container>
+        </mat-autocomplete>
+        <div class="w-25">
+            <button type="submit" class="btn px-0 py-0 no-outline">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg>
+                <!-- <i class="fas fa-search"></i> -->
+            </button>
+            <!-- <button type="button" class="btn px-0 py-0 no-outline" (click)="templateForm.reset()"> -->
+            <button type="button" class="btn px-0 py-0 no-outline" (click)="searchForm.reset(); clear()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg"
+                    viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                    <path fill-rule="evenodd"
+                        d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</form>

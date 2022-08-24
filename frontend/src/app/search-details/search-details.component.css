@@ -1,0 +1,42 @@
+/* .mainBody {
+    background-color: white;
+} */
+
+img {
+    width: 100px;
+    height: 100px;
+}
+
+/* .mainBody {
+    max-width: 1200px;
+} */
+
+.active {
+    border-bottom: 2px solid darkslateblue;
+}
+
+.price {
+    margin-top: 30px;
+    font-weight: 500;
+    margin-bottom: 50px;
+}
+
+.newsCard {
+    width: 550px;
+}
+
+/* .footer {
+    padding: 10px 10px 0px 10px;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background: rgb(214, 212, 212);
+} */
+
+/* .footer:first-child {
+    display: none;
+}
+
+.footer:last-child {
+    display: none;
+} */

@@ -1,0 +1,8 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+body {
+    /* background-image: url('./background-graph.jpg'); */
+    /* background-position: center; */
+    background-repeat: no-repeat;
+    background-size: cover;
+}
